@@ -44,9 +44,36 @@ enum STM32F746Board {
     }
 }
 
+enum STM32F429Board {
+    static func initialize() {
+        // Configure pin PG13 as an LED
+
+        // (1) AHB1ENR[i] = 1 ... enable clock
+        setRegisterBit(baseAddress: RCC.BaseAddress, offset: RCC.Offsets.AHB1ENR, bit: 6, value: 1)
+        // (2) MODER[1] = 1 ... set mode to output
+        setRegisterBit(baseAddress: GPIO.GPIOg_BaseAddress, offset: GPIO.Offsets.MODER, bit: 26, value: 1);
+
+        ledOff()
+    }
+    
+    static func ledOn() {
+        setRegisterBit(baseAddress: GPIO.GPIOg_BaseAddress, offset: GPIO.Offsets.BSRR, bit: 13, value: 1)
+    }
+    
+    static func ledOff() {
+        setRegisterBit(baseAddress: GPIO.GPIOg_BaseAddress, offset: GPIO.Offsets.BSRR, bit: 29, value: 1)
+    }
+    
+    static func delay(milliseconds: Int) {
+        for _ in 0 ..< 10_000 * milliseconds {
+            nop()
+        }
+    }
+}
+
 @main
 struct Main {
-    typealias Board = STM32F746Board
+    typealias Board = STM32F429Board
 
     static func main() {
         Board.initialize()

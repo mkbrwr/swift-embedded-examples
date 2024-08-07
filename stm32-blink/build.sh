@@ -18,7 +18,7 @@ CLANG_EXEC=${CLANG_EXEC:-`xcrun -f clang`}
 CLANG_FLAGS="-target $TARGET -Oz"
 
 LD_EXEC=${LD_EXEC:-$CLANG_EXEC}
-LD_FLAGS="-target $TARGET -nostdlib -static -Wl,-e,_reset -dead_strip -Wl,-no_zero_fill_sections -Wl,-segalign,4 -Wl,-segaddr,__VECTORS,0x00200000 -Wl,-seg1addr,0x00200200 -Wl,-pagezero_size,0"
+LD_FLAGS="-target $TARGET -nostdlib -static -Wl,-e,_reset -dead_strip -Wl,-no_zero_fill_sections -Wl,-segalign,4 -Wl,-segaddr,__VECTORS,0x08000000 -Wl,-seg1addr,0x08000200 -Wl,-pagezero_size,0"
 
 PYTHON_EXEC=${PYTHON_EXEC:-`xcrun -f python3`}
 MACHO2BIN=$TOOLSROOT/macho2bin.py
@@ -36,7 +36,7 @@ $CLANG_EXEC $CLANG_FLAGS -c $SRCROOT/Startup.c -o $BUILDROOT/Startup.o
 $LD_EXEC $LD_FLAGS $BUILDROOT/blink.o $BUILDROOT/Startup.o -o $BUILDROOT/blink
 
 # Extract sections from executable into flashable binary
-$PYTHON_EXEC $MACHO2BIN $BUILDROOT/blink $BUILDROOT/blink.bin --base-address 0x00200000 --segments '__TEXT,__DATA,__VECTORS'
+$PYTHON_EXEC $MACHO2BIN $BUILDROOT/blink $BUILDROOT/blink.bin --base-address 0x08000000 --segments '__TEXT,__DATA,__VECTORS'
 
 # Echo final binary path
 ls -al $BUILDROOT/blink.bin
