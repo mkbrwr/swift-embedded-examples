@@ -51,17 +51,29 @@ enum STM32F429Board {
         // (1) AHB1ENR[i] = 1 ... enable clock
         setRegisterBit(baseAddress: RCC.BaseAddress, offset: RCC.Offsets.AHB1ENR, bit: 6, value: 1)
         // (2) MODER[1] = 1 ... set mode to output
-        setRegisterBit(baseAddress: GPIO.GPIOg_BaseAddress, offset: GPIO.Offsets.MODER, bit: 26, value: 1);
+        // green
+        setRegisterBit(baseAddress: GPIO.GPIOg_BaseAddress, offset: GPIO.Offsets.MODER, bit: 26, value: 1); 
+        // red
+        setRegisterBit(baseAddress: GPIO.GPIOg_BaseAddress, offset: GPIO.Offsets.MODER, bit: 28, value: 1);
 
-        ledOff()
+        greenLedOff()
+        redLedOff()
     }
     
-    static func ledOn() {
+    static func greenLedOn() {
         setRegisterBit(baseAddress: GPIO.GPIOg_BaseAddress, offset: GPIO.Offsets.BSRR, bit: 13, value: 1)
     }
+
+    static func redLedOn() {
+        setRegisterBit(baseAddress: GPIO.GPIOg_BaseAddress, offset: GPIO.Offsets.BSRR, bit: 14, value: 1)
+    }
     
-    static func ledOff() {
+    static func greenLedOff() {
         setRegisterBit(baseAddress: GPIO.GPIOg_BaseAddress, offset: GPIO.Offsets.BSRR, bit: 29, value: 1)
+    }
+
+    static func redLedOff() {
+        setRegisterBit(baseAddress: GPIO.GPIOg_BaseAddress, offset: GPIO.Offsets.BSRR, bit: 30, value: 1)
     }
     
     static func delay(milliseconds: Int) {
@@ -79,9 +91,11 @@ struct Main {
         Board.initialize()
 
         while true {
-            Board.ledOn()
+            Board.greenLedOn()
+            Board.redLedOff()
             Board.delay(milliseconds: 100)
-            Board.ledOff()
+            Board.greenLedOff()
+            Board.redLedOn()
             Board.delay(milliseconds: 300)
         }
     }

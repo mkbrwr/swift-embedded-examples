@@ -6,10 +6,18 @@ import MMIO
 let gpioa = GPIOA(unsafeAddress: 0x40020000)
 
 /// General-purpose I/Os
+let gpiog = GPIOG(unsafeAddress: 0x40021800)
+
+let gpioc = GPIOC(unsafeAddress: 0x40020800)
+
+let gpiod = GPIOC(unsafeAddress: 0x40020c00)
+
+/// General-purpose I/Os
 let gpiob = GPIOB(unsafeAddress: 0x40020400)
 
 /// Reset and clock control
 let rcc = RCC(unsafeAddress: 0x40023800)
 
 /// Universal synchronous asynchronous receiver transmitter
-let usart1 = USART1(unsafeAddress: 0x40011000)
+// let usart1 = USART1(unsafeAddress: 0x40011000)
+let uart5  =  UART5(unsafeAddress: 0x40005000)
